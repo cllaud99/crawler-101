@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "crawler-101"
+version = "0.1.0"
+description = ""
+authors = ["ClaudioPontes <claudiohpontes@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+requests = "^2.32.3"
+taskipy = "^1.13.0"
+loguru = "^0.7.2"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.taskipy.tasks]
+format = """
+isort .
+black .
+sqlfluff fix dbt_dados_abertos_camara/models
+"""
+kill = "kill -9 $(lsof -t -i :8000)"
+test = "pytest -v"
+run = """
+python3 app/data_ingestion.py
+"""
+
+doc = "mkdocs serve"
