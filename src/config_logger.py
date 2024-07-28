@@ -1,6 +1,8 @@
-from loguru import logger
 import os
 import sys
+
+from loguru import logger
+
 
 def configure_logger(log_dir="logs"):
     """
@@ -26,14 +28,16 @@ def configure_logger(log_dir="logs"):
         backtrace=True,  # Inclui traceback em logs de erro
         diagnose=True,  # Diagnóstico adicional para erros
     )
-    
+
     # Configura a exibição dos logs no console com cores
     logger.add(
         sys.stdout,
         level="INFO",  # Nível de log
         format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level: <8}</level> | <cyan>{message}</cyan>",  # Formato do log com cores
-        filter=lambda record: record["level"].name in ("INFO", "ERROR"),  # Filtra os logs para mostrar INFO e ERROR
+        filter=lambda record: record["level"].name
+        in ("INFO", "ERROR"),  # Filtra os logs para mostrar INFO e ERROR
     )
+
 
 if __name__ == "__main__":
     configure_logger()

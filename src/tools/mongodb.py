@@ -1,12 +1,13 @@
 import os
+
 import pandas as pd
 from loguru import logger
 from pymongo import MongoClient
 
-from src.config_logger import configure_logger
-
+from config_logger import configure_logger
 
 configure_logger()
+
 
 class MongoConnection:
 
@@ -19,15 +20,17 @@ class MongoConnection:
             cls._instance._db = None
             cls._instance._collection = None
         return cls._instance
-    
-    def __init__(self, host='localhost', port=27017, database='test', collection='data'):
+
+    def __init__(
+        self, host="localhost", port=27017, database="test", collection="data"
+    ):
         if self._client is None:
             self.host = os.getenv("MONGO_HOST", host)
             self.port = os.getenv("MONGO_PORT", port)
             self.database_name = os.getenv("MONGO_DATABASE", database)
             self.collection_name = os.getenv("MONGO_COLLECTION", collection)
             self._connect()
-    
+
     def _connect(self):
         self._client = MongoClient(self.host, self.port)
         self._db = self._client[self.database_name]

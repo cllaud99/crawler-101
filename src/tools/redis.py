@@ -1,5 +1,7 @@
 import os
+
 import redis
+
 
 class RedisClient:
     _instance = None
@@ -9,13 +11,13 @@ class RedisClient:
             cls._instance = super(RedisClient, cls).__new__(cls, *args, **kwargs)
             cls._instance._redis_client = cls._instance._connect_to_redis()
         return cls._instance
-    
+
     @staticmethod
     def __load_config():
         return {
             "host": os.getenv("REDIS_HOST", "localhost"),
             "port": int(os.getenv("REDIS_PORT", 6379)),
-            "decode_responses": True
+            "decode_responses": True,
         }
 
     @classmethod
@@ -23,7 +25,7 @@ class RedisClient:
         config = cls.__load_config()
         redis_client = redis.StrictRedis(**config)
         return redis_client
-    
+
     @classmethod
     def get(cls):
         return cls()._redis_client

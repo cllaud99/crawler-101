@@ -1,14 +1,19 @@
 from abc import ABC, abstractmethod
+
 from loguru import logger
-from src.tools.redis import RedisClient
+
 from config_logger import configure_logger
+from tools.mongodb import MongoConnection
+from tools.redis import RedisClient
 
 configure_logger()
+
 
 class AbstractCrawler(ABC):
 
     def __init__(self):
         self.redis = RedisClient.get()
+        self.mongo = MongoConnection()
 
     @abstractmethod
     def execute_main(self):
@@ -16,6 +21,13 @@ class AbstractCrawler(ABC):
 
     @abstractmethod
     def execute_before(self):
+        before = self.step["script"]["before"]
+        if before:
+            for action in before:
+                if action_dict[action] is None:
+                    raise ("Step não criado")
+                action_dict[action](self.browser, before[action])
+                return 
         pass
 
     @abstractmethod

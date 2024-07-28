@@ -1,13 +1,16 @@
+import sys
+
 import requests
+from loguru import logger
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
-from loguru import logger
+
 from config_logger import configure_logger
-import sys
 
 configure_logger()
 
 # https://iosearch.reclameaqui.com.br/raichu-io-site-search-v1/segments/ranking/best/bancos-tradicionais-e-digitais/1/50 -> link test
+
 
 class ReclameAquiScraper:
     """
@@ -76,11 +79,15 @@ class ReclameAquiScraper:
         try:
             response = self.http.get(url, headers=headers)
             if response.status_code == 200:
-                self.content = response.json()  # Armazenando a resposta no atributo content
+                self.content = (
+                    response.json()
+                )  # Armazenando a resposta no atributo content
                 logger.info("Busca na página {} bem-sucedida", self.page)
                 return self.content
             else:
-                logger.error("Falha na requisição com código de status {}", response.status_code)
+                logger.error(
+                    "Falha na requisição com código de status {}", response.status_code
+                )
                 logger.error(response.text)
         except requests.RequestException as e:
             logger.error("Falha na requisição: {}", e)
@@ -132,7 +139,10 @@ class ReclameAquiScraper:
             self.search_companies()
             all_companies.extend(self.get_companies_data())
 
-        logger.info("Busca paginada concluída. Total de empresas encontradas: {}", len(all_companies))
+        logger.info(
+            "Busca paginada concluída. Total de empresas encontradas: {}",
+            len(all_companies),
+        )
         return all_companies
 
 

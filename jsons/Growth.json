@@ -1,0 +1,17 @@
+{
+    "link": "https://www.gsuplementos.com.br/",
+    "script": {
+        "before": {
+            "goto" : "http://www.google.com.br"
+        },
+        "main": [],
+        "after": []
+    },
+    "tag": {
+        "Botão de busca": {
+            "class": "",
+            "id": "",
+            "": ""
+        }
+    }
+}
